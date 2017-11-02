@@ -462,6 +462,8 @@ class LycheeSyncer:
 
                     createdalbums += 1
 
+                photos_titles = self.dao.get_all_photos_titles(album['id'])
+
                 # Albums are created or emptied, now take care of photos
                 for f in sorted(files):
 
@@ -469,9 +471,14 @@ class LycheeSyncer:
                         try:
                             discoveredphotos += 1
                             error = False
-                            logger.debug("**** Adding %s to lychee album: %s",
+                            logger.debug("**** Trying to add %s to lychee album: %s",
                                         os.path.join(root, f),
                                         album['name'])
+                            # Fast elimination of existing photos
+                            if f in photos_titles:
+                                logger.debug("Photo quickly eliminated: %s/%s" % (album['name'], f))
+                                continue
+                            
                             # corruption detected here by launching exception
                             pid = self.dao.getUniqPhotoId()
                             photo = LycheePhoto(pid, self.conf, f, album)
