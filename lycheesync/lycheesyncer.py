@@ -248,7 +248,12 @@ class LycheeSyncer:
                         photo.height = w
                         photo.width = h
                     exif_dict["0th"][piexif.ImageIFD.Orientation] = 1
-                    exif_bytes = piexif.dump(exif_dict)
+                    try:
+                        exif_bytes = piexif.dump(exif_dict)
+                    except piexif._exceptions.InvalidImageDataError:
+                        del exif_dict["1st"]
+                        del exif_dict["thumbnail"]
+                        exif_bytes = piexif.dump(exif_dict)
                     img.save(photo.destfullpath, exif=exif_bytes, quality=99)
             img.close()
 
