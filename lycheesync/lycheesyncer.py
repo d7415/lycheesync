@@ -420,7 +420,7 @@ class LycheeSyncer:
                         try:
                             discoveredphotos += 1
                             error = False
-                            logger.info("**** Adding %s to lychee album: %s",
+                            logger.debug("**** Adding %s to lychee album: %s",
                                         os.path.join(root, f),
                                         album['name'])
                             # corruption detected here by launching exception
@@ -435,6 +435,9 @@ class LycheeSyncer:
                                 if res:
                                     importedphotos += 1
                                     album['photos'].append(photo)
+                                    logger.info("**** Added %s to lychee album: %s",
+                                        os.path.join(root, f),
+                                        album['name'])
                                 else:
                                     error = True
                                     logger.error(
