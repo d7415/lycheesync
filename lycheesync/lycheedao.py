@@ -311,9 +311,10 @@ class LycheeDAO:
 
             cur = self.db.cursor()
             cur.execute(
-                "select album from lychee_photos where (title=%s OR checksum=%s)",
+                "select album from lychee_photos where (title=%s OR checksum=%s) AND album !=%s",
                 (photo.originalname,
-                 photo.checksum))
+                 photo.checksum,
+                 photo.albumid))
             rows = cur.fetchall()
             album_ids = [r['album'] for r in rows]
             if len(album_ids) > 0:
