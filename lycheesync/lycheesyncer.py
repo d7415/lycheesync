@@ -390,6 +390,7 @@ class LycheeSyncer:
 
         createdalbums = 0
         discoveredphotos = 0
+        skippedphotos = 0
         importedphotos = 0
         album = {}
         albums = []
@@ -479,6 +480,7 @@ class LycheeSyncer:
                             if f in photos_titles:
                                 logger.debug("Photo quickly eliminated: %s/%s" % (album['name'], f))
                                 skipped = True
+                                skippedphotos += 1
                                 continue
                             
                             # corruption detected here by launching exception
@@ -507,6 +509,7 @@ class LycheeSyncer:
                                     "photo already exists in this album with same name or same checksum: %s it won't be added to lychee",
                                     photo.srcfullpath)
                                 skipped = True
+                                skippedphotos += 1
                         except Exception as e:
 
                             logger.exception(e)
@@ -608,8 +611,5 @@ class LycheeSyncer:
         logger.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         logger.info("Directory scanned:" + self.conf['srcdir'])
         logger.info("Created albums: " + str(createdalbums))
-        if (importedphotos == discoveredphotos):
-            logger.info(str(importedphotos) + " photos imported on " + str(discoveredphotos) + " discovered")
-        else:
-            logger.error(str(importedphotos) + " photos imported on " + str(discoveredphotos) + " discovered")
+        logger.info("%s photos imported of %s discovered. %s skipped.", importedphotos, discoveredphotos, skippedphotos)
         logger.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
