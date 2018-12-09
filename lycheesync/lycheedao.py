@@ -494,7 +494,7 @@ class LycheeDAO:
                  "size, star, " +
                  "thumbUrl, album, iso, aperture, make, " +
                  "model, shutter, focal, takestamp, " +
-                 "description, title, checksum, medium) " +
+                 "description, title, checksum, medium, small) " +
                  "values " +
                  "({}, '{}', " +
                  "{}, '{}', " +
@@ -504,7 +504,7 @@ class LycheeDAO:
                  "'{}', '{}', '{}', " +
                  "'{}', '{}', '{}', " +
                  "'{}', '{}', '{}', " +
-                 "'{}', '{}')"
+                 "'{}', '{}', '{}')"
                  ).format(photo.id, photo.url,
                           self.conf["publicAlbum"], photo.type,
                           photo.width, photo.height,
@@ -513,7 +513,7 @@ class LycheeDAO:
                           photo.exif.iso, photo.exif.aperture, photo.exif.make,
                           photo.exif.model, photo.exif.exposure, photo.exif.focal,
                           stamp, self.sqlProtect(photo.description), self.sqlProtect(photo.originalname),
-                          photo.checksum, photo.medium)
+                          photo.checksum, photo.medium, photo.small)
         logger.debug(query)
         try:
             cur = self.db.cursor()

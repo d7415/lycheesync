@@ -137,7 +137,7 @@ class LycheeSyncer:
         - photo: a valid LycheePhoto object
         returns nothing
         """
-        # set  medium photo size
+        # set medium photo size
         size = 1920, 1080
         # set medium photo file name
         destfile = photo.url
@@ -145,6 +145,23 @@ class LycheeSyncer:
         destpath = os.path.join(self.conf["lycheepath"], "uploads", "medium")
         # make medium photo
         photo.mediumfullpath = self.thumbIt(size, photo, destpath, destfile, False)
+
+    def makeSmall(self, photo):
+        """
+        Make small photo used by Lychee for a given photo
+        and store their path in the LycheePhoto object
+        Parameters:
+        - photo: a valid LycheePhoto object
+        returns nothing
+        """
+        # set small photo size - Lychee seems to ignore width for these, so we'll set it really big.
+        size = 5000, 360
+        # set small photo file name
+        destfile = photo.url
+        # compute destination path
+        destpath = os.path.join(self.conf["lycheepath"], "uploads", "small")
+        # make small photo
+        photo.smallfullpath = self.thumbIt(size, photo, destpath, destfile, False)
 
     def makeThumbnail(self, photo):
         """
@@ -168,6 +185,10 @@ class LycheeSyncer:
         # make medium thumbnail if required
         if (photo.medium):
             self.makeMedium(photo)
+
+        # make small thumbnail if required
+        if (photo.small):
+            self.makeSmall(photo)
 
 
     def copyFileToLychee(self, photo):
@@ -222,6 +243,7 @@ class LycheeSyncer:
             if self.isAPhoto(url):
                 thumbpath = os.path.join(self.conf["lycheepath"], "uploads", "thumb", url)
                 mediumpath = os.path.join(self.conf["lycheepath"], "uploads", "medium", url)
+                smallpath = os.path.join(self.conf["lycheepath"], "uploads", "small", url)
                 filesplit = os.path.splitext(url)
                 thumb2path = ''.join([filesplit[0], "@2x", filesplit[1]]).lower()
                 thumb2path = os.path.join(self.conf["lycheepath"], "uploads", "thumb", thumb2path)
@@ -229,6 +251,7 @@ class LycheeSyncer:
                 remove_file(thumbpath)
                 remove_file(thumb2path)
                 remove_file(mediumpath)
+                remove_file(smallpath)
                 remove_file(bigpath)
 
     def adjustRotation(self, photo):
