@@ -471,12 +471,14 @@ class LycheeSyncer:
                         try:
                             discoveredphotos += 1
                             error = False
+                            skipped = False
                             logger.debug("**** Trying to add %s to lychee album: %s",
                                         os.path.join(root, f),
                                         album['name'])
                             # Fast elimination of existing photos
                             if f in photos_titles:
                                 logger.debug("Photo quickly eliminated: %s/%s" % (album['name'], f))
+                                skipped = True
                                 continue
                             
                             # corruption detected here by launching exception
@@ -501,17 +503,17 @@ class LycheeSyncer:
                                         album['name'],
                                         photo.srcfullpath)
                             else:
-                                logger.error(
+                                logger.debug(
                                     "photo already exists in this album with same name or same checksum: %s it won't be added to lychee",
                                     photo.srcfullpath)
-                                error = True
+                                skipped = True
                         except Exception as e:
 
                             logger.exception(e)
                             logger.error("could not add %s to album %s", f, album['name'])
                             error = True
                         finally:
-                            if not(error):
+                            if not (error or skipped):
                                 logger.info("**** Successfully added %s to lychee album: %s",
                                             os.path.join(root, f),
                                             album['name'])
