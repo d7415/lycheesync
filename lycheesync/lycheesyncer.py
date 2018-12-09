@@ -125,7 +125,7 @@ class LycheeSyncer:
 
             img = img.crop((left, upper, right, lower))
 
-        img.thumbnail(res, Image.ANTIALIAS)
+        img.thumbnail(res, Image.BICUBIC)
         img.save(destimage, quality=90)
         return destimage
 
