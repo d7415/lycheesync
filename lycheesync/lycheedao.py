@@ -32,11 +32,11 @@ class LycheeDAO:
             self.conf = conf
             if 'dbSocket' in self.conf:
                 # logger.debug("Connection to db in SOCKET mode")
-                logger.error("host: %s", self.conf['dbHost'])
-                logger.error("user: %s", self.conf['dbUser'])
-                logger.error("password: %s", self.conf['dbPassword'])
-                logger.error("db: %s", self.conf['db'])
-                logger.error("unix_socket: %s", self.conf['dbSocket'])
+                logger.debug("host: %s", self.conf['dbHost'])
+                logger.debug("user: %s", self.conf['dbUser'])
+                logger.debug("password: %s", self.conf['dbPassword'])
+                logger.debug("db: %s", self.conf['db'])
+                logger.debug("unix_socket: %s", self.conf['dbSocket'])
                 self.db = pymysql.connect(host=self.conf['dbHost'],
                                           user=self.conf['dbUser'],
                                           passwd=self.conf['dbPassword'],
